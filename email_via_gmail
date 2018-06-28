@@ -1,0 +1,19 @@
+import smtplib
+from email.mime.text import MIMEText
+from datetime import datetime
+from GMAIL_PWD import GMAIL_PWD
+
+def send_gmail(msg_file):
+    with open(msg_file, mode='rb') as message: #Open report html file for reading binary
+        msg = MIMEText(message.read(), 'html', 'html') #Create html message
+
+
+    msg['Subject'] = 'Minute Weather {}'.format(datetime.now().strftime("%Y-%m-%d %H:%M"))
+    msg['From'] = 'stringhopper90@gmail.com'
+    msg['To'] = 'sonyericson718@gmail.com, stringhopper90@gmail.com'
+
+    server = smtplib.SMTP('smtp.gmail.com', port=587)
+    server.ehlo() # Extended Hello
+    server.starttls()  # Put the SMTP connection in TLS(Transport Layer Security) mode.
+    server.ehlo()  # All SMTP commands that follow will be encrypted.
+    
