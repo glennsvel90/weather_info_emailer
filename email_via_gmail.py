@@ -2,6 +2,8 @@ import smtplib
 from email.mime.text import MIMEText
 from datetime import datetime
 from GMAIL_PWD import GMAIL_PWD
+from Get_Weather_Data import get_weather_data
+from Create_Html_file import create_html_report
 
 def send_gmail(msg_file):
     with open(msg_file, mode='rb') as message: #Open report html file for reading binary
@@ -16,4 +18,11 @@ def send_gmail(msg_file):
     server.ehlo() # Extended Hello
     server.starttls()  # Put the SMTP connection in TLS(Transport Layer Security) mode.
     server.ehlo()  # All SMTP commands that follow will be encrypted.
-    
+    server.login('stringhopper90@gmail.com', GMAIL_PWD)
+    server.send_message(msg)
+    server.close()
+
+weather_dict, icon = get_weather_data('KLAX')
+email_file = "Test_Email_File.html"
+create_html_report(weather_dict, icon, email_file)
+send_gmail(email_file)
